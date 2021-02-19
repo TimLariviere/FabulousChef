@@ -6,7 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Colors.fs" />
+    <Compile Include="Fonts.fs" />
+    <Compile Include="Models.fs" />
+    <Compile Include="Data.fs" />
+    <Compile Include="Components\DishCell.fs" />
+    <Compile Include="Pages\DashboardPage.fs" />
     <Compile Include="FabulousChef.fs" />
+    <EmbeddedResource Include="icomoon.ttf" />
+    <EmbeddedResource Include="OpenSans-Regular.ttf" />
+    <EmbeddedResource Include="OpenSans-SemiBold.ttf" />
   </ItemGroup>
   
   <ItemGroup>
