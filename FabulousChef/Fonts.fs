@@ -32,3 +32,41 @@ module IcomoonConstants =
     let [<Literal>] UpArrow = "\ue90e"
     let [<Literal>] Back = "\ue90f"
     let [<Literal>] Menu = "\ue910"
+    
+    open Fabulous.XamarinForms
+    
+    let fire fontSize =
+        View.Grid([
+            View.Label(
+                text = "\ue905",
+                textColor = Color.FromHex("#FF6536"),
+                fontFamily = Icomoon,
+                fontSize = fontSize
+            )
+            View.Label(
+                text = "\ue906",
+                textColor = Color.FromHex("#FF421D"),
+                fontFamily = Icomoon,
+                fontSize = fontSize
+            )
+            View.Label(
+                text = "\ue907",
+                textColor = Color.FromHex("#FBBF00"),
+                fontFamily = Icomoon,
+                fontSize = fontSize
+            )
+            View.Label(
+                text = "\ue908",
+                textColor = Color.FromHex("#FFA900"),
+                fontFamily = Icomoon,
+                fontSize = fontSize
+            )
+        ])
+    
+    let ok fontSize =
+        View.Label(
+            text = Ok,
+            textColor = Color.FromHex("#FFCC00"),
+            fontFamily = Icomoon,
+            fontSize = fontSize
+        )

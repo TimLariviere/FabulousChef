@@ -4,26 +4,35 @@ open System
 open Fabulous.Tracing
 open FabulousChef.Models
 open FabulousChef
+
+open FabulousChef.PancakeViewExtensions
 open FabulousChef.Components.DishCell
+open FabulousChef.Components.DishTypeRadioButton
 
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
-open Xamarin.Forms
 
 type Model =
     { Chef: Chef
-      SelectedDishType: DishType }
+      SelectedDishType: DishType
+      Dishes: Dish list  }
     
 type Msg =
     | SelectDishType of DishType
 
 let init () =
-    { Chef = Data.getChefById (ChefId 1)
-      SelectedDishType = MainDish }
+    let chef = Data.getChefById (ChefId 1)
+    let selectedDishType = MainDish
+    { Chef = chef
+      SelectedDishType = selectedDishType
+      Dishes = chef.Dishes |> List.filter (fun d -> d.Type = selectedDishType) }
     
 let update (msg: Msg) (model: Model) =
-    model
+    match msg with
+    | SelectDishType dishType ->
+        let dishes = model.Chef.Dishes |> List.filter (fun d -> d.Type = dishType)
+        { model with SelectedDishType = dishType; Dishes = dishes }
     
 let headerView model =
     View.StackLayout(
@@ -92,49 +101,61 @@ let headerView model =
     
 let dishTypeSelectorView model dispatch =
     let dishTypes = [
-        "Starters", Starter
-        "Main dishes", MainDish
-        "Desserts", Dessert
-        "Meats", Meat
+        "MEAT", Meat
+        "DESSERTS", Dessert
+        "MAIN DISH", MainDish
+        "STARTERS", Starter
     ]
     
-    View.StackLayout(
-        orientation = StackOrientation.Horizontal,
-        children = [
-            for (name, dishType) in dishTypes do 
-                View.RadioButton(
-                    groupName = "DishType",
-                    content = Content.fromString name,
-                    isChecked = (model.SelectedDishType = dishType),
-                    checkedChanged = fun _ -> dispatch (SelectDishType dishType)
-                )
-        ]
+    View.PancakeView(
+        backgroundColor = Colors.dishTypeSelectorBackground (),
+        cornerRadius = CornerRadius(0., 20., 0., 20.),
+        margin = Thickness(0., 0., 15., 0.),
+        verticalOptions = LayoutOptions.Center,
+        padding = Thickness(5., 0.),
+        content = View.StackLayout(
+            spacing = 0.,
+            children = [
+                for (name, dishType) in dishTypes do 
+                    View.DishTypeRadioButton(
+                        groupName = "DishType",
+                        content = Content.fromString name,
+                        isChecked = (model.SelectedDishType = dishType),
+                        checkedChanged = (fun _ -> dispatch (SelectDishType dishType))
+                    )
+            ]
+         )
     )
     
 let dishesListView model =
-    View.CollectionView([
-        for dish in model.Chef.Dishes do
-            if dish.Type = model.SelectedDishType then
+    if model.Dishes.Length = 0 then
+        View.Label(
+            text = sprintf "No %A available" model.SelectedDishType,
+            horizontalOptions = LayoutOptions.Center,
+            verticalOptions = LayoutOptions.Center
+        )
+    else
+        View.CollectionView([
+            for dish in model.Dishes do
                 View.DishCell(dish.Id)
-    ])
+        ])
     
 let view model dispatch =
     View.ContentPage(
         useSafeArea = false,
         backgroundColor = Colors.appBackground (),
         content = View.Grid(
-            rowdefs = [ Auto; Auto; Star ],
-            coldefs = [ Absolute 50.; Star ],
+            rowdefs = [ Auto; Star ],
+            coldefs = [ Absolute 75.; Star ],
             children = [
                 (headerView model)
                     .ColumnSpan(2)
             
                 (dishTypeSelectorView model dispatch)
                     .Row(1)
-                    .ColumnSpan(2)
             
                 (dishesListView model)
-                    .Row(2)
+                    .Row(1)
                     .Column(1)
             ]
         )

@@ -99,9 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
-    <BundleResource Include="Resources\chef-alexender-doe.jpg" />
-    <BundleResource Include="Resources\dish-italian-grill-fish.png" />
-    <BundleResource Include="Resources\dish-shrimp-bowl-waba-grill.png" />
+    <BundleResource Include="Resources\chef_alexender_doe.jpg" />
+    <BundleResource Include="Resources\dish_italian_grill_fish.png" />
+    <BundleResource Include="Resources\dish_shrimp_bowl_waba_grill.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -119,6 +119,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
+    <Reference Include="Xamarin.Forms.PancakeView, Version=2.0.1.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Xamarin.Forms.PancakeView.2.3.0.759\lib\xamarinios10\Xamarin.Forms.PancakeView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\packages\Xamarin.Forms.5.0.0.1874\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>

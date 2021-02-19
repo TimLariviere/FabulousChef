@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="PancakeViewExtensions.fs" />
     <Compile Include="Colors.fs" />
     <Compile Include="Fonts.fs" />
     <Compile Include="Models.fs" />
     <Compile Include="Data.fs" />
     <Compile Include="Components\DishCell.fs" />
+    <Compile Include="Components\DishTypeRadioButton.fs" />
     <Compile Include="Pages\DashboardPage.fs" />
     <Compile Include="FabulousChef.fs" />
     <EmbeddedResource Include="icomoon.ttf" />
@@ -28,6 +30,7 @@
     <PackageReference Include="Fabulous.XamarinForms.LiveUpdate" Version="0.70.0-nightly2" />
     <PackageReference Include="FSharp.Core" Version="5.0.0" />
     <PackageReference Update="FSharp.Core" Version="5.0.0" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" /> 
+    <PackageReference Include="Xamarin.Forms.PancakeView" Version="2.3.0.759" />
   </ItemGroup>
 </Project>

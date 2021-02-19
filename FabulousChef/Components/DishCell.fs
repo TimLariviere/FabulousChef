@@ -3,6 +3,7 @@ module FabulousChef.Components.DishCell
 open System
 open FabulousChef.Models
 open FabulousChef
+open FabulousChef.PancakeViewExtensions
 
 open Fabulous
 open Fabulous.XamarinForms
@@ -21,7 +22,7 @@ let init dishId =
     let dish = Data.getDishById dishId
     let averageReviews =
         if dish.Reviews.Length = 0 then
-            7.
+            5.
         else
             dish.Reviews
             |> List.map float
@@ -45,15 +46,16 @@ let formatTime (time: TimeSpan) =
 
 let view model dispatch =
     View.Grid(
-        margin = Thickness(0., 0., 0., 15.),
+        margin = Thickness(0., 0., 0., 20.),
         children = [
-            View.ContentView(
+            View.PancakeView(
                 backgroundColor = Colors.controlBackground (),
+                cornerRadius = CornerRadius(30., 0., 30., 0.),
                 margin = Thickness(0., 90., 0., 0.)
             )
             
             View.StackLayout(
-                padding = Thickness(20., 0., 20., 20.),
+                padding = Thickness(20., 0., 30., 20.),
                 children = [
                     View.StackLayout(
                         orientation = StackOrientation.Horizontal,
@@ -68,12 +70,13 @@ let view model dispatch =
                                 source = Image.fromFont(
                                      FontImageSource(
                                          FontFamily = Fonts.Icomoon,
-                                         Glyph = Fonts.IcomoonConstants.Heart
+                                         Glyph = Fonts.IcomoonConstants.Heart,
+                                         Color = Colors.uncheckedHeartColor ()
                                      )
                                 ),
                                 height = 40.,
                                 width = 40.,
-                                margin = Thickness(0., 0., 0., -70.)
+                                margin = Thickness(0., 0., 0., -80.)
                             )
                         ]
                     )
@@ -86,20 +89,16 @@ let view model dispatch =
                     View.StackLayout(
                         orientation = StackOrientation.Horizontal,
                         children = [
+                            if model.AverageReviews <= 5. then
+                                Fonts.IcomoonConstants.ok (FontSize.fromValue 20.)
+                            else
+                                Fonts.IcomoonConstants.fire (FontSize.fromValue 20.)
+                                
                             View.Label(
                                 formattedText = View.FormattedString(
                                     spans = [
                                         View.Span(
-                                            text =
-                                                (if model.AverageReviews <= 5. then
-                                                    Fonts.IcomoonConstants.Ok
-                                                else
-                                                    Fonts.IcomoonConstants.Fire),
-                                            fontFamily = Fonts.Icomoon,
-                                            textColor = Colors.averageReviewTextForeground ()
-                                        )
-                                        View.Span(
-                                            text = sprintf " %.2f" model.AverageReviews,
+                                            text = sprintf "%.2f" model.AverageReviews,
                                             fontFamily = Fonts.OpenSansSemibold,
                                             textColor = Colors.averageReviewTextForeground ()
                                         )
@@ -114,18 +113,25 @@ let view model dispatch =
                             )
                         ]
                     )
-                    View.Label(
-                        text = formatTime model.Dish.Recipe.PreparationTime,
-                        textColor = Colors.preparationTimeForeground (),
-                        fontFamily = Fonts.OpenSansBold,
-                        fontSize = FontSize.fromValue 16.,
-                        backgroundColor = Colors.preparationTimeBackground (),
-                        horizontalTextAlignment = TextAlignment.Center,
-                        width = 150.,
+                    View.StackLayout(
                         height = 40.,
-                        padding = Thickness(10.),
-                        horizontalOptions = LayoutOptions.Start,
-                        margin = Thickness(0., 20., 0., 0.)
+                        margin = Thickness(0., 20., 0., 0.),
+                        children = [
+                            View.PancakeView(
+                                cornerRadius = CornerRadius(10.),
+                                backgroundColor = Colors.preparationTimeBackground (),
+                                padding = Thickness(10.),
+                                width = 150.,
+                                horizontalOptions = LayoutOptions.Start,
+                                content = View.Label(
+                                    text = formatTime model.Dish.Recipe.PreparationTime,
+                                    textColor = Colors.preparationTimeForeground (),
+                                    fontFamily = Fonts.OpenSansBold,
+                                    fontSize = FontSize.fromValue 16.,
+                                    horizontalTextAlignment = TextAlignment.Center
+                                )
+                            )
+                        ]
                     )
                 ]
             )
@@ -138,5 +144,6 @@ let program =
 type Fabulous.XamarinForms.View with
     static member inline DishCell(id) =
         View.ContentView(
-            Component.forProgramWithArgs (program, id)
+            key = id.ToString(),
+            content = Component.forProgramWithArgs (program, id)
         )

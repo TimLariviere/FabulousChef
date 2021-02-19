@@ -7,11 +7,11 @@ let data =
     [ { Id = ChefId 1
         FirstName = "Alexender"
         LastName = "Doe"
-        Picture = "chef-alexender-doe.jpg"
+        Picture = "chef_alexender_doe.jpg"
         Dishes = [
             { Id = DishId 1
               Name = "Italian Grill Fish"
-              Picture = "dish-italian-grill-fish.png"
+              Picture = "dish_italian_grill_fish.png"
               Type = MainDish
               IsFavorite = false
               Recipe =
@@ -21,13 +21,16 @@ let data =
             
             { Id = DishId 2
               Name = "Shrimp Bowl Waba Grill"
-              Picture = "dish-shrimp-bowl-waba-grill.png"
+              Picture = "dish_shrimp_bowl_waba_grill.png"
               Type = MainDish
               IsFavorite = true
               Recipe =
                   { Steps = []
                     PreparationTime = TimeSpan(1, 45, 0) }
-              Reviews = [] }
+              Reviews = [
+                  10
+                  9
+              ] }
         ] } ]
 
 let getDishById (id: DishId) =
