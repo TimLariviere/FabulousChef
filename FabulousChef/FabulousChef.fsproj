@@ -14,8 +14,11 @@
     <Compile Include="Pages\DashboardPage.fs" />
     <Compile Include="FabulousChef.fs" />
     <EmbeddedResource Include="icomoon.ttf" />
+    <EmbeddedResource Include="OpenSans-Light.ttf" />
     <EmbeddedResource Include="OpenSans-Regular.ttf" />
     <EmbeddedResource Include="OpenSans-SemiBold.ttf" />
+    <EmbeddedResource Include="OpenSans-Bold.ttf" />
+    <EmbeddedResource Include="Montserrat-SemiBold.ttf" />
   </ItemGroup>
   
   <ItemGroup>

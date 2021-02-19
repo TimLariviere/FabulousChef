@@ -2,12 +2,18 @@ module FabulousChef.Fonts
 
 open Xamarin.Forms
 
+let [<Literal>] OpenSansLight = "OpenSans-Light"
 let [<Literal>] OpenSansRegular = "OpenSans-Regular"
 let [<Literal>] OpenSansSemibold = "OpenSans-Semibold"
+let [<Literal>] OpenSansBold = "OpenSans-Bold"
+let [<Literal>] MontserratSemibold = "Montserrat-Semibold"
 let [<Literal>] Icomoon = "Icomoon"
 
+[<assembly: ExportFont("OpenSans-Light.ttf", Alias = OpenSansLight)>]
 [<assembly: ExportFont("OpenSans-Regular.ttf", Alias = OpenSansRegular)>]
 [<assembly: ExportFont("OpenSans-Semibold.ttf", Alias = OpenSansSemibold)>]
+[<assembly: ExportFont("OpenSans-Bold.ttf", Alias = OpenSansBold)>]
+[<assembly: ExportFont("Montserrat-Semibold.ttf", Alias = MontserratSemibold)>]
 [<assembly: ExportFont("icomoon.ttf", Alias = Icomoon)>]
 do ()
 

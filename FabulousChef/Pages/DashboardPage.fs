@@ -72,12 +72,12 @@ let headerView model =
                     View.Image(
                         source = Image.fromPath model.Chef.Picture,
                         aspect = Aspect.AspectFill,
-                        height = 60.,
-                        width = 60.,
+                        height = 52.,
+                        width = 52.,
                         clip = View.EllipseGeometry(
-                            center = Point(30., 30.),
-                            radiusX = 30.,
-                            radiusY = 30.
+                            center = Point(26., 26.),
+                            radiusX = 26.,
+                            radiusY = 26.
                         )
                     )
                 ]
@@ -124,14 +124,18 @@ let view model dispatch =
         backgroundColor = Colors.appBackground (),
         content = View.Grid(
             rowdefs = [ Auto; Auto; Star ],
+            coldefs = [ Absolute 50.; Star ],
             children = [
                 (headerView model)
+                    .ColumnSpan(2)
             
                 (dishTypeSelectorView model dispatch)
                     .Row(1)
+                    .ColumnSpan(2)
             
                 (dishesListView model)
                     .Row(2)
+                    .Column(1)
             ]
         )
     )
