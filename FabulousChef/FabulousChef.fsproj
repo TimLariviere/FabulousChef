@@ -6,14 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="FabulousExtensions.fs" />
     <Compile Include="PancakeViewExtensions.fs" />
     <Compile Include="Colors.fs" />
     <Compile Include="Fonts.fs" />
     <Compile Include="Models.fs" />
     <Compile Include="Data.fs" />
+    <Compile Include="Controls\CircleImage.fs" />
+    <Compile Include="Controls\DishTypeRadioButton.fs" />
+    <Compile Include="Controls\LikeButton.fs" />
+    <Compile Include="Controls\PreparationTimeLabel.fs" />
+    <Compile Include="Controls\ReviewsSummary.fs" />
     <Compile Include="Components\DishCell.fs" />
-    <Compile Include="Components\DishTypeRadioButton.fs" />
     <Compile Include="Pages\DashboardPage.fs" />
+    <Compile Include="Pages\DishPage.fs" />
     <Compile Include="FabulousChef.fs" />
     <EmbeddedResource Include="icomoon.ttf" />
     <EmbeddedResource Include="OpenSans-Light.ttf" />

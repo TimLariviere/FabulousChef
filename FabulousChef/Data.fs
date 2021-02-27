@@ -25,7 +25,16 @@ let data =
               Type = MainDish
               IsFavorite = true
               Recipe =
-                  { Steps = []
+                  { Steps = [
+                        "After losing his job at a popular restaurant, Chef Carl Casper attempts to start afresh by fixing up a food truck. In the process, he ends up becoming closer to his family."
+                        "After losing his job at a popular restaurant, Chef Carl Casper attempts to start afresh by fixing up a food truck. In the process, he ends up becoming closer to his family."
+                        "After losing his job at a popular restaurant, Chef Carl Casper attempts to start afresh by fixing up a food truck. In the process, he ends up becoming closer to his family."
+                        "After losing his job at a popular restaurant, Chef Carl Casper attempts to start afresh by fixing up a food truck. In the process, he ends up becoming closer to his family."
+                        "After losing his job at a popular restaurant, Chef Carl Casper attempts to start afresh by fixing up a food truck. In the process, he ends up becoming closer to his family."
+                        "After losing his job at a popular restaurant, Chef Carl Casper attempts to start afresh by fixing up a food truck. In the process, he ends up becoming closer to his family."
+                        "After losing his job at a popular restaurant, Chef Carl Casper attempts to start afresh by fixing up a food truck. In the process, he ends up becoming closer to his family."
+                        "After losing his job at a popular restaurant, Chef Carl Casper attempts to start afresh by fixing up a food truck. In the process, he ends up becoming closer to his family."
+                    ]
                     PreparationTime = TimeSpan(1, 45, 0) }
               Reviews = [
                   10
@@ -41,3 +50,10 @@ let getDishById (id: DishId) =
 let getChefById (id: ChefId) =
     data
     |> List.find (fun c -> c.Id = id)
+    
+let getChefForDishId (dishId: DishId) =
+    data
+    |> List.find (fun c ->
+        c.Dishes
+        |> List.exists(fun d -> d.Id = dishId)
+    )

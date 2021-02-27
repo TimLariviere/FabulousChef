@@ -2,12 +2,14 @@ module FabulousChef.Pages.DashboardPage
 
 open System
 open Fabulous.Tracing
+open FabulousChef.Components
 open FabulousChef.Models
 open FabulousChef
 
 open FabulousChef.PancakeViewExtensions
+open FabulousChef.Controls.CircleImage
+open FabulousChef.Controls.DishTypeRadioButton
 open FabulousChef.Components.DishCell
-open FabulousChef.Components.DishTypeRadioButton
 
 open Fabulous
 open Fabulous.XamarinForms
@@ -20,19 +22,32 @@ type Model =
     
 type Msg =
     | SelectDishType of DishType
+    | SelectDish of DishId
+    
+type ExternalMsg =
+    | NavigateToDish of DishId
+    
+let mapToCmd cmdMsg =
+    Cmd.none
 
 let init () =
     let chef = Data.getChefById (ChefId 1)
     let selectedDishType = MainDish
-    { Chef = chef
-      SelectedDishType = selectedDishType
-      Dishes = chef.Dishes |> List.filter (fun d -> d.Type = selectedDishType) }
+    let model =
+        { Chef = chef
+          SelectedDishType = selectedDishType
+          Dishes = chef.Dishes |> List.filter (fun d -> d.Type = selectedDishType) }
+    model, [], []
     
 let update (msg: Msg) (model: Model) =
     match msg with
     | SelectDishType dishType ->
         let dishes = model.Chef.Dishes |> List.filter (fun d -> d.Type = dishType)
-        { model with SelectedDishType = dishType; Dishes = dishes }
+        let newModel = { model with SelectedDishType = dishType; Dishes = dishes }
+        newModel, [], []
+        
+    | SelectDish dishId ->
+        model, [], [NavigateToDish dishId]
     
 let headerView model =
     View.StackLayout(
@@ -78,16 +93,10 @@ let headerView model =
                         ]
                     )
                     
-                    View.Image(
+                    View.CircleImage(
                         source = Image.fromPath model.Chef.Picture,
-                        aspect = Aspect.AspectFill,
                         height = 52.,
-                        width = 52.,
-                        clip = View.EllipseGeometry(
-                            center = Point(26., 26.),
-                            radiusX = 26.,
-                            radiusY = 26.
-                        )
+                        width = 52.
                     )
                 ]
             )
@@ -127,7 +136,7 @@ let dishTypeSelectorView model dispatch =
          )
     )
     
-let dishesListView model =
+let dishesListView model dispatch =
     if model.Dishes.Length = 0 then
         View.Label(
             text = sprintf "No %A available" model.SelectedDishType,
@@ -135,10 +144,19 @@ let dishesListView model =
             verticalOptions = LayoutOptions.Center
         )
     else
-        View.CollectionView([
-            for dish in model.Dishes do
-                View.DishCell(dish.Id)
-        ])
+        View.CollectionView(
+            items = [
+                for dish in model.Dishes do
+                    View.DishCell(
+                        id = dish.Id,
+                        onExternalMsg = (fun extMsg ->
+                            match extMsg with
+                            | DishCell.ExternalMsg.Tapped ->
+                                dispatch (SelectDish dish.Id)
+                        )
+                    )
+            ]
+        )
     
 let view model dispatch =
     View.ContentPage(
@@ -154,19 +172,20 @@ let view model dispatch =
                 (dishTypeSelectorView model dispatch)
                     .Row(1)
             
-                (dishesListView model)
+                (dishesListView model dispatch)
                     .Row(1)
                     .Column(1)
             ]
         )
-    )
+    ).HasNavigationBar(false)
     
 let program =
-    XamarinFormsProgram.mkSimple init update view
+    XamarinFormsProgram.mkComponentWithCmdMsg init update view mapToCmd
 #if DEBUG
     |> Program.withTraceLevel TraceLevel.Debug
     |> Program.withConsoleTrace
 #endif
 
 type Fabulous.XamarinForms.View with
-    static member inline DashboardPage() = Component.forProgram program
+    static member inline DashboardPage(onExternalMsg) =
+        Component.forProgramWithExternalMsg(program, onExternalMsg)

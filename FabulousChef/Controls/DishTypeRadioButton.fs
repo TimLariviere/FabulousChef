@@ -1,4 +1,4 @@
-module FabulousChef.Components.DishTypeRadioButton
+module FabulousChef.Controls.DishTypeRadioButton
 
 open FabulousChef
 

@@ -3,11 +3,12 @@ module FabulousChef.Components.DishCell
 open System
 open FabulousChef.Models
 open FabulousChef
+open FabulousChef.Controls.LikeButton
+open FabulousChef.Controls.PreparationTimeLabel
+open FabulousChef.Controls.ReviewsSummary
 open FabulousChef.PancakeViewExtensions
 
-open Fabulous
 open Fabulous.XamarinForms
-open Xamarin.Forms
 open Xamarin.Forms
 
 type Model =
@@ -17,6 +18,10 @@ type Model =
     
 type Msg =
     | ToggleLike of bool
+    | CellTapped
+    
+type ExternalMsg =
+    | Tapped
     
 let init dishId =
     let dish = Data.getDishById dishId
@@ -28,25 +33,29 @@ let init dishId =
             |> List.map float
             |> List.average
     
-    { Dish = dish
-      IsFavorite = false
-      AverageReviews = averageReviews }
+    let model =
+        { Dish = dish
+          IsFavorite = false
+          AverageReviews = averageReviews }
+    model, [], []
     
 let update msg model =
     match msg with
-    | ToggleLike value -> { model with IsFavorite = value } : Model
-    
-let formatTime (time: TimeSpan) =
-    if time.TotalHours > 1. then
-        sprintf "%i HR %i MIN" time.Hours time.Minutes
-    elif time.TotalHours = 1. then
-        sprintf "1 HR"
-    else
-        sprintf "%i MIN" time.Minutes
+    | ToggleLike value ->
+        let newModel : Model = { model with IsFavorite = value }
+        newModel, [], []
+        
+    | CellTapped ->
+        model, [], [Tapped]
 
 let view model dispatch =
     View.Grid(
         margin = Thickness(0., 0., 0., 20.),
+        gestureRecognizers = [
+            View.TapGestureRecognizer(
+                command = fun () -> dispatch CellTapped
+            )
+        ],
         children = [
             View.PancakeView(
                 backgroundColor = Colors.controlBackground (),
@@ -66,17 +75,10 @@ let view model dispatch =
                                 width = 180.,
                                 horizontalOptions = LayoutOptions.StartAndExpand
                             )
-                            View.ImageButton(
-                                source = Image.fromFont(
-                                     FontImageSource(
-                                         FontFamily = Fonts.Icomoon,
-                                         Glyph = Fonts.IcomoonConstants.Heart,
-                                         Color = Colors.uncheckedHeartColor ()
-                                     )
-                                ),
+                            View.LikeButton(
+                                margin = Thickness(0., 0., 0., -80.),
                                 height = 40.,
-                                width = 40.,
-                                margin = Thickness(0., 0., 0., -80.)
+                                width = 40.
                             )
                         ]
                     )
@@ -86,50 +88,16 @@ let view model dispatch =
                         fontFamily = Fonts.MontserratSemibold,
                         margin = Thickness(0., 10., 0., 0.)
                     )
-                    View.StackLayout(
-                        orientation = StackOrientation.Horizontal,
-                        children = [
-                            if model.AverageReviews <= 5. then
-                                Fonts.IcomoonConstants.ok (FontSize.fromValue 20.)
-                            else
-                                Fonts.IcomoonConstants.fire (FontSize.fromValue 20.)
-                                
-                            View.Label(
-                                formattedText = View.FormattedString(
-                                    spans = [
-                                        View.Span(
-                                            text = sprintf "%.2f" model.AverageReviews,
-                                            fontFamily = Fonts.OpenSansSemibold,
-                                            textColor = Colors.averageReviewTextForeground ()
-                                        )
-                                        View.Span(
-                                            text = sprintf " (%i)" model.Dish.Reviews.Length,
-                                            fontFamily = Fonts.OpenSansLight,
-                                            textColor = Colors.reviewCountTextForeground ()
-                                        )
-                                    ]
-                                ),
-                                fontSize = FontSize.fromValue 16.
-                            )
-                        ]
+                    View.ReviewsSummary(
+                        averageReviews = model.AverageReviews,
+                        reviewsCount = model.Dish.Reviews.Length
                     )
                     View.StackLayout(
                         height = 40.,
                         margin = Thickness(0., 20., 0., 0.),
                         children = [
-                            View.PancakeView(
-                                cornerRadius = CornerRadius(10.),
-                                backgroundColor = Colors.preparationTimeBackground (),
-                                padding = Thickness(10.),
-                                width = 150.,
-                                horizontalOptions = LayoutOptions.Start,
-                                content = View.Label(
-                                    text = formatTime model.Dish.Recipe.PreparationTime,
-                                    textColor = Colors.preparationTimeForeground (),
-                                    fontFamily = Fonts.OpenSansBold,
-                                    fontSize = FontSize.fromValue 16.,
-                                    horizontalTextAlignment = TextAlignment.Center
-                                )
+                            View.PreparationTimeLabel(
+                                preparationTime = model.Dish.Recipe.PreparationTime
                             )
                         ]
                     )
@@ -139,11 +107,11 @@ let view model dispatch =
     )
     
 let program =
-    XamarinFormsProgram.mkSimple init update view
+    XamarinFormsProgram.mkComponent init update view
     
 type Fabulous.XamarinForms.View with
-    static member inline DishCell(id) =
+    static member inline DishCell(id, onExternalMsg) =
         View.ContentView(
             key = id.ToString(),
-            content = Component.forProgramWithArgs (program, id)
+            content = Component.forProgramWithArgsAndExternalMsg(program, id, onExternalMsg)
         )
