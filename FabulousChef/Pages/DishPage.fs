@@ -143,4 +143,4 @@ let program =
     
 type Fabulous.XamarinForms.View with
     static member inline DishPage(dishId) =
-        Component.forProgramWithArgs(program, dishId)
+        Component.forProgramWithArgs($"DishPage-{dishId.ToString()}", program, dishId)

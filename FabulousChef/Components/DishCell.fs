@@ -112,6 +112,10 @@ let program =
 type Fabulous.XamarinForms.View with
     static member inline DishCell(id, onExternalMsg) =
         View.ContentView(
-            key = id.ToString(),
-            content = Component.forProgramWithArgsAndExternalMsg(program, id, onExternalMsg)
+            Component.forProgramWithArgs(
+                $"DishCell-{id.ToString()}",
+                program,
+                id,
+                externalMsg = onExternalMsg
+            )
         )

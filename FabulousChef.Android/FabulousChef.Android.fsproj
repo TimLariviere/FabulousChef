@@ -76,10 +76,30 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Fabulous, Version=0.70.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Fabulous.0.70.0-nightly7\lib\netstandard2.0\Fabulous.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fabulous.LiveUpdate, Version=0.70.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Fabulous.LiveUpdate.0.70.0-nightly7\lib\netstandard2.0\Fabulous.LiveUpdate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fabulous.XamarinForms, Version=0.70.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Fabulous.XamarinForms.0.70.0-nightly7\lib\netstandard2.0\Fabulous.XamarinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fabulous.XamarinForms.LiveUpdate, Version=0.70.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.0.70.0-nightly7\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Java.Interop" />
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
@@ -281,21 +301,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous">
-      <HintPath>..\packages\Fabulous.0.70.0-nightly2\lib\netstandard2.0\Fabulous.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous.LiveUpdate">
-      <HintPath>..\packages\Fabulous.LiveUpdate.0.70.0-nightly2\lib\netstandard2.0\Fabulous.LiveUpdate.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous.XamarinForms">
-      <HintPath>..\packages\Fabulous.XamarinForms.0.70.0-nightly2\lib\netstandard2.0\Fabulous.XamarinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous.XamarinForms.LiveUpdate">
-      <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.0.70.0-nightly2\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Buffers">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Google.Android.Material, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Xamarin.Google.Android.Material.1.1.0.5\lib\monoandroid90\Xamarin.Google.Android.Material.dll</HintPath>

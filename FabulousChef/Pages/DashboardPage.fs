@@ -188,4 +188,4 @@ let program =
 
 type Fabulous.XamarinForms.View with
     static member inline DashboardPage(onExternalMsg) =
-        Component.forProgramWithExternalMsg(program, onExternalMsg)
+        Component.forProgram("DashboardPage", program, externalMsg = onExternalMsg)
